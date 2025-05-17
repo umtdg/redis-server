@@ -54,7 +54,7 @@ jobs:
 
       # Treat warnings as errors for exit code
       - name: Clippy
-        run: cargo clippy --all-features --frozen -- -Dwarnings
+        run: cargo clippy --all-features --locked -- -Dwarnings
 
   format:
     name: Check format
