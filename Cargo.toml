@@ -1,0 +1,12 @@
+[workspace]
+resolver = "2"
+members = ["resp", "resp-server"]
+
+[workspace.package]
+version = "0.1.0"
+edition = "2024"
+authors = ["Umut Dag <umu7d9@gmail.com>"]
+
+[workspace.dependencies]
+env_logger = "0.11.8"
+log = "0.4.27"
