@@ -21,7 +21,7 @@ enum Command {
 }
 
 impl Command {
-    fn get(cmd: &Vec<BulkString>) -> Option<Command> {
+    fn get(cmd: &[BulkString]) -> Option<Command> {
         if cmd.len() != 2 {
             None
         } else {
@@ -31,7 +31,7 @@ impl Command {
         }
     }
 
-    fn set(cmd: &Vec<BulkString>) -> Option<Command> {
+    fn set(cmd: &[BulkString]) -> Option<Command> {
         if cmd.len() != 3 {
             None
         } else {
@@ -42,7 +42,7 @@ impl Command {
         }
     }
 
-    fn del(cmd: &Vec<BulkString>) -> Option<Command> {
+    fn del(cmd: &[BulkString]) -> Option<Command> {
         if cmd.len() != 2 {
             None
         } else {
@@ -52,13 +52,10 @@ impl Command {
         }
     }
 
-    fn from_cmd(cmd: &Vec<BulkString>) -> Option<Command> {
-        let command = cmd.first();
-        if let None = command {
-            return None;
-        }
+    fn from_cmd(cmd: &[BulkString]) -> Option<Command> {
+        let command = cmd.first()?;
 
-        let command = command.unwrap().value();
+        let command = command.value();
         match &command[..] {
             "GET" => Self::get(cmd),
             "SET" => Self::set(cmd),
@@ -72,19 +69,19 @@ impl Command {
 
         let mut db = db.kv_store.lock();
 
-        let res = match self {
-            &Command::Get { ref key } => match db.get(key.value()) {
+        let res = match *self {
+            Command::Get { ref key } => match db.get(key.value()) {
                 Some(v) => RespValue::Bulk(BulkString::new(v.clone())),
                 None => RespValue::None,
             },
-            &Command::Set { ref key, ref value } => {
+            Command::Set { ref key, ref value } => {
                 let key = key.value();
                 let value = value.value();
 
                 db.insert(key.clone(), value.clone());
                 RespValue::Simple("OK".to_string())
             }
-            &Command::Del { ref key } => match db.remove(key.value()) {
+            Command::Del { ref key } => match db.remove(key.value()) {
                 Some(_) => RespValue::Simple("OK".to_string()),
                 None => RespValue::None,
             },
@@ -132,7 +129,7 @@ async fn handle_request(
 
     let cmd = request.unwrap();
     let command = Command::from_cmd(&cmd);
-    if let None = command {
+    if command.is_none() {
         send_err(
             transport,
             format!(

@@ -3,9 +3,9 @@ use crate::{
     writer::{RespWriter, WriteBuf, WriteResult},
 };
 
-/// ===========================================================
-/// RespReadable, SimpleRespReadable, RespWritable, SimpleRespWritable
-/// ===========================================================
+// ===========================================================
+// RespReadable, SimpleRespReadable, RespWritable, SimpleRespWritable
+// ===========================================================
 
 pub trait RespReadable<'a>: Sized {
     fn parse(parser: &mut RespParser<'a>) -> ParseResult<Self>;
@@ -58,14 +58,14 @@ where
     }
 }
 
-/// ===========================================================
-/// String
-/// ===========================================================
+// ===========================================================
+// String
+// ===========================================================
 
 // TODO: Use tuple structs to differentiate Simple and Error strings
 
 impl<'a> SimpleRespReadable<'a> for String {
-    const TAGS: &'a [u8] = &[b'+', b'-'];
+    const TAGS: &'a [u8] = b"+-";
 
     fn parse_raw(data: &'a [u8]) -> ParseResult<Self> {
         crate::parser::read_str(data)
@@ -80,14 +80,14 @@ impl SimpleRespWritable for String {
     }
 }
 
-/// ===========================================================
-/// Integer
-/// ===========================================================
+// ===========================================================
+// Integer
+// ===========================================================
 
 // TODO: Use tuple structs to differentiate Length from Integers
 
 impl<'a> SimpleRespReadable<'a> for i64 {
-    const TAGS: &'a [u8] = &[b':', b'$', b'*'];
+    const TAGS: &'a [u8] = b":*$";
 
     fn parse_raw(data: &'a [u8]) -> ParseResult<Self> {
         crate::parser::read_i64(data)
@@ -102,9 +102,9 @@ impl SimpleRespWritable for i64 {
     }
 }
 
-/// ===========================================================
-/// BulkString
-/// ===========================================================
+// ===========================================================
+// BulkString
+// ===========================================================
 
 // TODO: This is NOT a String, but rather byte array
 
@@ -180,9 +180,9 @@ impl RespWritable for BulkString {
     }
 }
 
-/// ===========================================================
-/// Array
-/// ===========================================================
+// ===========================================================
+// Array
+// ===========================================================
 
 impl RespReadable<'_> for Vec<RespValue> {
     fn parse(parser: &mut RespParser<'_>) -> ParseResult<Self> {
@@ -240,9 +240,9 @@ impl RespReadable<'_> for Vec<BulkString> {
     }
 }
 
-/// ===========================================================
-/// RespValue
-/// ===========================================================
+// ===========================================================
+// RespValue
+// ===========================================================
 
 #[derive(Debug, PartialEq, Eq)]
 pub enum RespValue {

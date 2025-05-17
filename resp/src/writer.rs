@@ -1,8 +1,8 @@
 use crate::types::RespWritable;
 
-/// ===========================================================
-/// WriteErrorKind, WriteError, WriteResult
-/// ===========================================================
+// ===========================================================
+// WriteErrorKind, WriteError, WriteResult
+// ===========================================================
 
 #[derive(Debug)]
 pub enum WriteError {
@@ -11,9 +11,9 @@ pub enum WriteError {
 
 pub type WriteResult<T = ()> = Result<T, WriteError>;
 
-/// ===========================================================
-/// WriteBuf, RespWriter
-/// ===========================================================
+// ===========================================================
+// WriteBuf, RespWriter
+// ===========================================================
 
 pub struct WriteBuf(Vec<u8>);
 
@@ -24,6 +24,10 @@ impl WriteBuf {
 
     pub fn len(&self) -> usize {
         self.0.len()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.0.is_empty()
     }
 
     pub fn get(&self) -> &Vec<u8> {
