@@ -3,5 +3,6 @@ name = "resp"
 version.workspace = true
 edition.workspace = true
 author.workspace = true
+rust-version.workspace = true
 
 [dependencies]

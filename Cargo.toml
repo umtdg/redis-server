@@ -6,6 +6,7 @@ members = ["resp", "resp-server"]
 version = "0.1.0"
 edition = "2024"
 authors = ["Umut Dag <umu7d9@gmail.com>"]
+rust-version = "1.85"
 
 [workspace.dependencies]
 env_logger = "0.11.8"

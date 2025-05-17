@@ -3,6 +3,7 @@ name = "resp-server"
 version.workspace = true
 edition.workspace = true
 authors.workspace = true
+rust-version.workspace = true
 
 [dependencies]
 resp = { path = "../resp" }
